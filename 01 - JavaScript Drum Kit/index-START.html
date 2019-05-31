@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 
@@ -57,10 +59,41 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    const keys = document.querySelectorAll('.key');
+    
+    document.addEventListener('keydown', ({
+      keyCode,
+      target
+    }) => {
+      
+      // Good to know: You can retrieve elements by their data attributes 
+      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      const keyTarget = document.querySelector(`.key[data-key="${keyCode}"]`);
+      
+      // Good habbit: Ensure that audio exists !!
+      if (!audio) return;
+      
+      // Restart audio to ensure that it will play continuously!
+      audio.currentTime = 0;
+      keyTarget.classList.add('playing');
+      audio.play();
+    });
+    
+    function removeTransition (e) {
+      if(e.propertyName !== 'transform') return;    // we'll use transform as th longest transition event and skip all the others
 
-</script>
+      // this === the element that was selected
+      // noticed we're using a normal function
+      // if it was an arrow function, we won't be able to access this the same way 
+      this.classList.remove('playing');
+    };
+
+    // When the css transition ends
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  </script>
 
 
 </body>
+
 </html>
