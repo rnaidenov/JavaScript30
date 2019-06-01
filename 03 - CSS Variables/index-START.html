@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
 </head>
+
 <body>
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
@@ -21,10 +23,26 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
     /*
       misc styles, nothing to do with CSS variables
     */
+
+    /* Highest level css element along with body element <-- global scope for the vars */
+    :root {
+      --base: rgb(228, 228, 138);
+      --spacing: 15px;
+      --blur: 50px;
+    }
+
+
+    img {
+      padding: var(--spacing);
+      background-color: var(--base);
+      filter: blur(var(--blur));
+    }
+
+
+
 
     body {
       text-align: center;
@@ -45,7 +63,39 @@
   </style>
 
   <script>
+
+    // the root element
+    const root = document.documentElement;
+
+    // Getting the inputs on the page
+    // You can ommit the ">" before the inpit 
+    const controls = document.querySelectorAll('.controls input');
+
+
+    // watch out for scoping
+    // if you have an annonymous function here, you won't have access to this 
+    controls.forEach(input => {
+      input.addEventListener('change', handleUpate);
+    });
+
+
+    function handleUpate(){
+      // this is the element that we're interacting with
+      // the one that's executing the function
+      const suffix = this.dataset.sizing || ''; 
+      root.style.setProperty(`--${this.name}`, `${this.value}${suffix}`);
+    }
+
+
+    // Takeaways: 
+    // 1. Don't forget about this when using event handlers
+    // 2. Make use of the data property when you can
+
+
+
+
   </script>
 
 </body>
+
 </html>
