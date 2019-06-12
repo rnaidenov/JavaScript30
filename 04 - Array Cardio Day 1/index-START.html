@@ -31,28 +31,69 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    console.log('exercise 1',inventors.filter(inv => inv.year >= 1500 && inv.year < 1600));
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    console.log('exercise 2', inventors.map(inv => `${inv.first} ${inv.last}`));
 
     // Array.prototype.sort()
-    // 3. Sort the inventors by birthdate, oldest to youngest
+    // 3. Sort the inventors by birthdate, oldest to youngest    
+    console.log('exercise 3')
+    const sorted = inventors.sort((inv1, inv2) => inv1.year - inv2.year);
+    console.table(sorted);
+
+
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    console.log('exercise 4', inventors.reduce((acc, inv) => acc + (inv.passed - inv.year), 0));
+
+
 
     // 5. Sort the inventors by years lived
+    console.log('exercise 5')
+    const sorted2 =  inventors.sort((inv1, inv2) => (inv2.passed - inv2.year) - (inv1.passed - inv1.year));
+    console.table(sorted2);
+
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    console.log('exercise 6',);
+    
+    // in the console
+    // Good to know: You can create an array from, say, a NodeList, 
+    // and add an additional callback function to create specific elements in the array 
+    // Array.from(document.querySelectorAll('.mw-category-group li'), bul => bul.textContent).filter(bul => bul.includes('de'));
+
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    // Good to remember: when sorting this ternary expression should help you
+    console.log('exercise 7');
+    const sorted3 = people.sort((val1, val2) => {
+      const [first1, last1] = val1.split(', ');
+      const [first2, last2] = val2.split(', ');
+      return last1 > last2 ? 1 : -1;
+    });
+    console.table(sorted3);
+
+
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
-    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck', 'pogostick'];
+    console.log('exercise 8', data.reduce((acc, val) => {
+      if(!acc[val]) { 
+        acc[val] = 1;
+      } else {
+        acc[val]++;
+      }
+      return acc;
+    }, { }));
+
+
 
   </script>
 </body>
