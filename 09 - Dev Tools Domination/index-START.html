@@ -36,10 +36,25 @@
     // Viewing DOM Elements
 
     // Grouping together
+    dogs.forEach(dog => {
+      // Good to know
+      console.group(dog.name);
+      console.log(`Hi, this is ${dog.name}!`);
+      console.log(`I am ${dog.age} years old`);
+      console.groupEnd(dog.name);
+    })
+
 
     // counting
 
     // timing
+    console.time('async console.time fn');
+
+    setTimeout(() => {
+      console.timeEnd('async console.time fn');
+      console.log('sese');
+    }, 420);
+
 
   </script>
 </body>

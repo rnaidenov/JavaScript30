@@ -1,19 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
 </head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+
+
+    const canvas = document.querySelector('#draw');
+    const context = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    context.lineJoin = 'round';
+    context.lineCap = 'round';
+    // Good to know: 
+    // lineJoin and lineCap are for specifying what form will be used for the strokes
+
+
+    let isDrawing = false,    // Good to consider: Use flags to capturing different states 
+      direction = false,    // Should the stroke be getting fatter ? 
+      lastX = 0,
+      lastY = 0,
+      hue = 0,
+      lineWidth = 1;
+
+
+    document.addEventListener('mousedown', e => {
+      if (isDrawing) {
+        return;
+      }
+      const { clientX, clientY } = e;
+      lastX = clientX;
+      lastY = clientY;
+      isDrawing = true;
+    });
+
+
+    document.addEventListener('mouseup', e => {
+      isDrawing = false;
+    });
+
+
+
+
+
+    // Updating line width
+    function updateLineWidth() {
+      console.log(context);
+      if (lineWidth >= 100 || lineWidth < 1) {
+        direction = !direction;   // Good to consider: flipping state on certain condition
+      }
+      if(direction){
+        lineWidth++;
+      } else {
+        lineWidth--;
+      }
+      context.lineWidth = lineWidth;
+      console.log(lineWidth);
+    }
+
+
+    document.addEventListener('mousemove', e => {
+      if (isDrawing) {
+        const { clientX, clientY } = e;
+
+        context.beginPath();
+        context.moveTo(lastX, lastY);
+        context.lineTo(clientX, clientY);
+        context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        updateLineWidth();
+        context.stroke();
+        lastX = clientX;
+        lastY = clientY;
+        hue++;
+
+        if (hue >= 360) {
+          hue = 0;
+          lineWidth = 20;
+        }
+
+
+      }
+    });
+
+
+
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
 
 </body>
+
 </html>
