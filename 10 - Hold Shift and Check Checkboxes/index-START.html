@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Hold Shift to Check Multiple Checkboxes</title>
 </head>
+
 <body>
   <style>
-
     html {
       font-family: sans-serif;
       background: #ffc600;
@@ -17,7 +18,7 @@
       margin: 50px auto;
       background: white;
       border-radius: 5px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
     }
 
     .item {
@@ -30,7 +31,7 @@
       border-bottom: 0;
     }
 
-    input:checked + p {
+    input:checked+p {
       background: #F9F9F9;
       text-decoration: line-through;
     }
@@ -44,13 +45,13 @@
       padding: 20px;
       transition: background 0.2s;
       flex: 1;
-      font-family:'helvetica neue';
+      font-family: 'helvetica neue';
       font-size: 20px;
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
     }
   </style>
-   <!--
+  <!--
    The following is a common layout you would see in an email client.
 
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
@@ -95,7 +96,65 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+
+
+    let lastIdxSelected = null;
+    let shiftPressed = false;
+    
+
+    // Good to not forget: 
+    // keydown - when pressed
+    // keyup - when releasd
+
+    // When shift is pressed
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 16) {
+        shiftPressed = true;
+      }
+    })
+
+
+    // When shift is released
+    document.addEventListener('keyup', e => {
+      if (e.keyCode === 16) {
+        shiftPressed = false;
+        lastIdxSelected = null;
+      }
+    })
+
+
+    const items = Array.from(document.querySelectorAll('.item'));
+
+    items.forEach(item => item.addEventListener('click', e => { 
+      const currIdxSelected = getPressedIndex(e.currentTarget);
+      // select multiple, if possible
+      if(shiftPressed && lastIdxSelected){
+        const from = lastIdxSelected > currIdxSelected ? currIdxSelected : lastIdxSelected;
+        const to = lastIdxSelected > currIdxSelected ? lastIdxSelected : currIdxSelected;
+        selectMultiple(from, to)
+      }
+
+      lastIdxSelected = currIdxSelected;
+    }));
+
+
+    function selectMultiple(fromIdx, toIdx){
+      for(let i=fromIdx; i <= toIdx; i++) {
+        const item = items[i];
+        const isChcked = item.querySelector('input').checked;
+        item.querySelector('input').checked = true;
+      }
+    }
+
+
+    function getPressedIndex(selected){
+      return items.indexOf(selected);
+    }
+
+
+
+  </script>
 </body>
+
 </html>
