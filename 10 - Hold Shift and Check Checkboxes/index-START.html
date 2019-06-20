@@ -99,59 +99,37 @@
   <script>
 
 
-    let lastIdxSelected = null;
-    let shiftPressed = false;
-    
-
-    // Good to not forget: 
-    // keydown - when pressed
-    // keyup - when releasd
-
-    // When shift is pressed
-    document.addEventListener('keydown', e => {
-      if (e.keyCode === 16) {
-        shiftPressed = true;
-      }
-    })
+    // Good to consider: inBetween solution!!
+    let inBetween = false;
+    let lastChecked = null;
 
 
-    // When shift is released
-    document.addEventListener('keyup', e => {
-      if (e.keyCode === 16) {
-        shiftPressed = false;
-        lastIdxSelected = null;
-      }
-    })
+    // Good to know: 
+    // onClick for checkbox --> e.shiftKey <-- is shift pressed or not
 
 
-    const items = Array.from(document.querySelectorAll('.item'));
+    // Good to not forget: Grab elements by attributes 
+    const checkboxes = Array.from(document.querySelectorAll('.inbox input[type="checkbox"]'));
 
-    items.forEach(item => item.addEventListener('click', e => { 
-      const currIdxSelected = getPressedIndex(e.currentTarget);
-      // select multiple, if possible
-      if(shiftPressed && lastIdxSelected){
-        const from = lastIdxSelected > currIdxSelected ? currIdxSelected : lastIdxSelected;
-        const to = lastIdxSelected > currIdxSelected ? lastIdxSelected : currIdxSelected;
-        selectMultiple(from, to)
+
+    // Good not to forget: Direct event handlers on elements, so you can use this keyword
+    function handleCheck(e) {
+      if (e.shiftKey && this.checked) {
+        checkboxes.forEach(cb => {
+          if (this === cb || cb === lastChecked) {
+            inBetween = !inBetween;
+          }
+
+          if (inBetween) {
+            cb.checked = true;
+          }
+        })
       }
 
-      lastIdxSelected = currIdxSelected;
-    }));
-
-
-    function selectMultiple(fromIdx, toIdx){
-      for(let i=fromIdx; i <= toIdx; i++) {
-        const item = items[i];
-        const isChcked = item.querySelector('input').checked;
-        item.querySelector('input').checked = true;
-      }
+      lastChecked = this;
     }
 
-
-    function getPressedIndex(selected){
-      return items.indexOf(selected);
-    }
-
+    checkboxes.forEach(cb => cb.addEventListener('click', handleCheck));
 
 
   </script>
