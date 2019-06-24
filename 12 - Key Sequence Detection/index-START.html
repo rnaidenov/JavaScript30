@@ -7,6 +7,34 @@
 </head>
 <body>
 <script>
+
+
+
+  let code = '';
+  let pressed = [];
+  const secretWord = 'wesbos';
+
+  window.addEventListener('keyup', (e) => {
+    // Good to not forget: e.key <--- actualKey 
+    // e.g. key ---> ArrowLeft
+    //      keyCode ---> 37
+
+    pressed.push(e.key);
+
+    const wordUpToNow = pressed.join('');
+
+    if(secretWord === wordUpToNow) {
+      console.log('laina');
+      // do something
+    } else if (!secretWord.includes(wordUpToNow)) {
+      pressed = [];
+      return;
+    }
+
+
+  });
+
+
 </script>
 </body>
 </html>
