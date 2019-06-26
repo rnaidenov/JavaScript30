@@ -28,7 +28,87 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('savedItems')) || [];
+
+
+  // Good to know: Local storage saves a key-value String pairs
+
+  // When a new item is added 
+  function addItem(e){
+     // Good to not forget: 
+    // Prevent the default behaviour of the form, which is reloading the page after being submitted 
+    e.preventDefault();
+
+    const text = this.querySelector('[name="item"]')['value'];
+
+    items.push({ 
+      text,
+      done: false
+    });
+    saveItems(items);
+    populateList(items, itemsList);
+
+
+    // Good to not forget: Resets form fields
+    this.reset();
+  }
+
+
+  window.addEventListener('load', function() {
+    populateList(items, itemsList);
+  });
+
+
+  addItems.addEventListener('change', (e) => {console.log(e)})
+
+  // Good not to forget: dataset can be useful when determining what you've clicked on!!
+  function handleDone(e){
+    // Good to not forget: Skip if not input using matches: 
+    if(!e.target.matches('input')) return;  
+    const { dataset: { index }} = e.target;
+    items[index].done = !items[index].done;
+    saveItems(items);
+  }
+
+
+  // Good not to forget: event delegation to handle dynamic addition of elements: https://developer.mozilla.org/en-US/docs/Web/API/Element/matches
+  itemsList.addEventListener('click', handleDone);
+
+
+  // Good to know: Saving an array in localStorage by using stringify 
+  function saveItems(items){
+    localStorage.setItem('savedItems', JSON.stringify(items));
+  }
+
+
+  // Populating html list of plates
+  // Good to consider: Have default value in order to ensure that JS doesn't break 
+  // Good to consider: Passing in arguments, so function can be reused with other menus  
+  // Good to know: Anything passed to checked will check the checkbox; you should ommit 'checked', if you don't want it to be marked
+  function populateList(plates = [], platesList){
+    itemsList.innerHTML = plates.map((item, idx) => (
+      ` 
+        <li>
+          <input type="checkbox" data-index=${idx} id="item${idx}" ${item.done ? "checked" : ''} />
+          <label for=item${idx}>${item.text}</label>
+        </li>
+      `
+    )).join('');
+  }
+
+
+
+
+ 
+
+
+  // Good to know:
+  // Better to listen to a submit event on a form rather than click event on the button
+  // This ensures that we're listening for a click, enter, external submission
+  addItems.addEventListener('submit',addItem);
+
+
+
 
 </script>
 
