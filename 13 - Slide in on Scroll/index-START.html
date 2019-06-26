@@ -43,6 +43,11 @@
   </div>
 
   <script>
+
+
+    // Good not to forget:
+    // Debounce function used for performance consideration
+    // Otherwise, event is fired too many times 
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,6 +62,39 @@
         if (callNow) func.apply(context, args);
       };
     }
+
+
+
+
+    window.addEventListener('scroll', debounce(checkSlide));
+
+
+    function checkSlide(e){
+      const [, window] = e.path;
+      images.forEach(img => {
+
+      // halfway through the image
+      const slideInAt = (window.scrollY + window.innerHeight) + img.height / 2;   // Good to learn:  If we remove the "/ 2", we will have gone through the whole img
+      
+      const imageBottom = img.offsetTop + img.height;
+      
+      const isHalfShown = slideInAt > img.offsetTop  // Good to learn: You're displaying the first half of the image 
+      const isNotScrolledPast = window.scrollY < imageBottom;
+
+      if(isHalfShown && isNotScrolledPast) {
+        img.classList.add('active');
+      }  else {
+        img.classList.remove('active');
+      }
+    });
+    }
+
+
+    const images = Array.from(document.querySelectorAll('.slide-in'));
+
+
+
+   
 
   </script>
 
