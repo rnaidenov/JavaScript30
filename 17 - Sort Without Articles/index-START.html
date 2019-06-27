@@ -49,18 +49,15 @@
   <script>
     const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
-    const articles = ['The', 'An', 'A'];
 
 
     function withoutArticle(word) {
-      const wordSplit = word.split(/\s/);
-      return articles.includes(wordSplit[0]) ? wordSplit.slice(1, wordSplit.length).join(' ') : word;
+      const articles = /^(a |an |the )/i;
+      return word.replace(articles, '').trim();
     }
 
 
-    const sorted = bands.sort((a, b) => {
-      return withoutArticle(a) > withoutArticle(b) ? 1 : -1
-    });
+    const sorted = bands.sort((a, b) => withoutArticle(a) > withoutArticle(b) ? 1 : -1);
 
 
     const html = sorted.map(band => {
