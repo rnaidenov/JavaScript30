@@ -29,12 +29,34 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: 10px 10px 0 rgba(46, 49, 49, 0.25);
     font-size: 100px;
   }
   </style>
 
 <script>
+
+  const walk = 100;
+  const hero = document.querySelector('.hero');
+  const text = document.querySelector('h1');
+
+
+  hero.addEventListener('mousemove', function(e) {
+    
+    const { offsetWidth: width, offsetHeight: height } = hero;
+    let { offsetX: x, offsetY: y } = e;
+
+    if(this !== e.target){
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    const xWalk = Math.round((x / width * walk) - (walk / 2));
+    const yWalk = Math.round((y / height * walk) - (walk / 2));
+
+    text.style.textShadow = `${xWalk}px ${yWalk}px 3px rgba(46, 49, 49, 0.25)`;
+  });
+
 </script>
 </body>
 </html>
