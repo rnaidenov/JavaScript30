@@ -182,6 +182,36 @@
     </li>
   </ul>
 <script>
+
+  const videos = document.querySelectorAll('[data-time]');
+
+  const sese = Array.from(videos).reduce((acc, video) => {
+    const { dataset: { time } } = video;
+
+    const [minutes, seconds] = time.split(':').map(timeSlice => parseInt);
+    let [totalHours, totalMinutes, totalSeconds] = acc.split(':').map(timeSlice => parseInt);
+
+    totalSeconds = totalSeconds + seconds;
+
+    if(totalSeconds > 60) {
+      totalMinutes = totalMinutes + Math.floor(totalSeconds / 60);
+      totalSeconds = totalSeconds % 60;
+    }
+
+  
+    totalMinutes = totalMinutes + minutes;
+
+
+    if(totalMinutes > 60) {
+      totalHours = totalHours + Math.floor(totalMinutes / 60);
+      totalMinutes = totalMinutes % 60;
+    }
+
+    return `${totalHours}:${totalMinutes}:${totalSeconds}`;
+  }, '00:00:00');
+
+  console.log(sese);
+
 </script>
 </body>
 </html>
