@@ -26,7 +26,28 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    
+
+    const allLinks = document.querySelectorAll('a');
+
+
+    const span = document.createElement('span');
+    span.classList.add('highlight');
+    document.body.appendChild(span);
+
+
+    function highlightLink(e) {
+      const { width, height, top, left } = this.getBoundingClientRect();
+      span.style.width = `${width}px`;
+      span.style.height = `${height}px`;
+      span.style.transform = `translate(${left}px, ${top + window.scrollY}px)`;
+    }
+
+
+    allLinks.forEach(link => {
+      link.addEventListener('mouseenter', highlightLink);
+    });
+
   </script>
 </body>
 </html>
