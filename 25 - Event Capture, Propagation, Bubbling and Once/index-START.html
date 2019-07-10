@@ -43,6 +43,16 @@
 <button></button>
 <script>
 
+
+ const allDivs = document.querySelectorAll('div');
+
+function handleClick(e) {
+  e.stopPropagation();
+  console.log(this.classList.value);
+}
+
+ allDivs.forEach(div => div.addEventListener('click', handleClick))
+
 </script>
 </body>
 </html>
